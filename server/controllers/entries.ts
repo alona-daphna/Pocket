@@ -27,11 +27,11 @@ const createEntry = async (req: Request, res: Response) => {
 
   const { content } = req.body;
 
-  await entry.create({
+  const newEntry = await entry.create({
     content,
   });
 
-  res.json('Entry create successfully');
+  res.json(newEntry);
 };
 
 const deleteEntry = async (req: Request, res: Response) => {
@@ -51,7 +51,7 @@ const deleteEntry = async (req: Request, res: Response) => {
     res.status(200).send('Entry deleted successfully');
   } catch (error) {
     console.error('Error deleting entry:', error);
-    res.status(500).send('Failed to delete entry');
+    res.status(500).json({ error: 'Failed to delete entry' });
   }
 };
 
@@ -67,12 +67,14 @@ const updateEntry = async (req: Request, res: Response) => {
   }
 
   try {
-    await entry.findByIdAndUpdate(id, { content: req.body.content });
+    const newEntry = await entry.findByIdAndUpdate(id, {
+      content: req.body.content,
+    });
 
-    res.status(200).send('Entry updated successfully');
+    res.status(200).send(newEntry);
   } catch (error) {
     console.error('Error updating entry:', error);
-    res.status(500).send('Failed to update entry');
+    res.status(500).json({ error: 'Failed to update entry' });
   }
 };
 

@@ -1,18 +1,30 @@
-import React, { useState } from 'react';
+import React, { Dispatch, SetStateAction, useState } from 'react';
 import { AutoTextArea } from './AutoTextArea';
 import { GoScreenFull } from 'react-icons/go';
+import { Entry } from '../types';
 
-const Textbox = () => {
+interface TextboxProps {
+  setEntries: Dispatch<SetStateAction<Entry[]>>;
+}
+
+const Textbox = ({ setEntries }: TextboxProps) => {
   const [content, setContent] = useState('');
 
   const createEntry = async () => {
-    await fetch('http://localhost:4000/entries', {
+    const response = await fetch('http://localhost:4000/entries', {
       method: 'POST',
       body: JSON.stringify({ content: content }),
       headers: {
         'Content-Type': 'application/json',
       },
     });
+
+    if (response.ok) {
+      const entry: Entry = await response.json();
+      setEntries((prev) => [...prev, entry]);
+    } else {
+      console.log((await response.json()).error);
+    }
   };
 
   const handleSubmit = () => {

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { Entry } from '../types';
 import { formatDate } from '../utils/formatting';
 import { AutoTextArea } from './AutoTextArea';
@@ -7,9 +7,10 @@ import DeleteConfirmPopup from './DeleteConfirmPopup';
 
 interface EntryProps {
   entry: Entry;
+  setEntries: Dispatch<SetStateAction<Entry[]>>;
 }
 
-const EntryCard = ({ entry }: EntryProps) => {
+const EntryCard = ({ entry, setEntries }: EntryProps) => {
   const [content, setContent] = useState(entry.content);
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
   const [showDeletePopup, setShowDeletePopup] = useState(false);
@@ -34,9 +35,15 @@ const EntryCard = ({ entry }: EntryProps) => {
 
   const handleDelete = async () => {
     setShowDeletePopup(false);
-    await fetch(`http://localhost:4000/entries/${entry._id}`, {
+    const response = await fetch(`http://localhost:4000/entries/${entry._id}`, {
       method: 'DELETE',
     });
+
+    if (response.ok) {
+      setEntries((prev) => [...prev.filter((x) => x._id != entry._id)]);
+    } else {
+      console.log((await response.json()).error);
+    }
   };
 
   return (
