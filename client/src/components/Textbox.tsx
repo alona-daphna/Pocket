@@ -47,7 +47,7 @@ const Textbox = ({ setEntries, setIsFullMode, isFullMode }: TextboxProps) => {
       {!isFullMode ? (
         <>
           <AutoTextArea
-            styles="align-middle leading-3 overflow-hidden resize-none w-full px-3 py-2 focus:border-slate-300 border-2 rounded-md border-white focus:outline-none"
+            styles="dark:bg-neutral-800 dark:text-white dark:border-neutral-700 overflow-hidden resize-none w-full px-3 focus:border-slate-300 border rounded-md border-white focus:outline-none"
             placeholder="type something..."
             value={content}
             setValue={setContent}
@@ -55,13 +55,13 @@ const Textbox = ({ setEntries, setIsFullMode, isFullMode }: TextboxProps) => {
             resizeOnEnter={true}
           />
           <GoScreenFull
-            className="cursor-pointer absolute right-2 bottom-[6px] hover:bg-slate-200 p-1 rounded-md text-2xl"
+            className="cursor-pointer absolute right-2 bottom-[9px] dark:text-white dark:hover:bg-neutral-700 hover:bg-slate-200 p-1 rounded-md text-2xl"
             onClick={() => setIsFullMode(true)}
           />
         </>
       ) : (
         <textarea
-          className="w-full h-[80vh] resize-none focus:outline-none"
+          className="dark:bg-neutral-800 w-full dark:text-white h-[80vh] resize-none focus:outline-none rounded-md px-2 py-1"
           placeholder="type something..."
           onKeyDown={handleKeyDown}
           value={content}

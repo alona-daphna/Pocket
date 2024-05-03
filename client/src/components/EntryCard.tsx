@@ -48,7 +48,7 @@ const EntryCard = ({ entry, setEntries }: EntryProps) => {
 
   return (
     <div
-      className=" relative w-full bg-slate-50 rounded-md py-5 px-6 items-start flex flex-col mb-4"
+      className=" relative w-full dark:bg-neutral-800 dark:text-neutral-200 bg-slate-50 rounded-md py-5 px-6 items-start flex flex-col mb-4"
       onMouseEnter={() => setShowDeleteBtn(true)}
       onMouseLeave={() => setShowDeleteBtn(false)}
     >

@@ -3,3 +3,5 @@ export interface Entry {
   content: string;
   createdAt: string;
 }
+
+export type Mode = 'light' | 'dark';
