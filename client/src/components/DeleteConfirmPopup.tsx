@@ -1,5 +1,3 @@
-import React from 'react';
-
 interface DeleteConfirmPopupProps {
   setShowPopup: (value: boolean) => void;
   handleDelete: () => void;

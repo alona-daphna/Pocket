@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useMemo, useState } from 'react';
+import { Dispatch, SetStateAction, useMemo, useState } from 'react';
 import { Entry } from '../types';
 import { formatDate } from '../utils/formatting';
 import { AutoTextArea } from './AutoTextArea';
