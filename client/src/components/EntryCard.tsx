@@ -3,6 +3,7 @@ import { Entry } from '../types';
 import { formatDate } from '../utils/formatting';
 import { AutoTextArea } from './AutoTextArea';
 import { TiDelete } from 'react-icons/ti';
+import DeleteConfirmPopup from './DeleteConfirmPopup';
 
 interface EntryProps {
   entry: Entry;
@@ -11,6 +12,7 @@ interface EntryProps {
 const EntryCard = ({ entry }: EntryProps) => {
   const [content, setContent] = useState(entry.content);
   const [showDeleteBtn, setShowDeleteBtn] = useState(false);
+  const [showDeletePopup, setShowDeletePopup] = useState(false);
 
   const formattedDate = useMemo(() => {
     let date = formatDate(entry.createdAt);
@@ -30,8 +32,11 @@ const EntryCard = ({ entry }: EntryProps) => {
     });
   };
 
-  const toggleConfirmPopup = async () => {
-    //show popup
+  const handleDelete = async () => {
+    setShowDeletePopup(false);
+    await fetch(`http://localhost:4000/entries/${entry._id}`, {
+      method: 'DELETE',
+    });
   };
 
   return (
@@ -44,7 +49,7 @@ const EntryCard = ({ entry }: EntryProps) => {
         className={` cursor-pointer hover:text-[red] absolute right-2 top-3 ${
           showDeleteBtn ? 'block' : 'hidden'
         }`}
-        onClick={toggleConfirmPopup}
+        onClick={() => setShowDeletePopup(true)}
       />
       <AutoTextArea
         styles="text-left resize-none text-sm w-full bg-inherit focus:outline-none"
@@ -53,6 +58,12 @@ const EntryCard = ({ entry }: EntryProps) => {
         onBlur={handleSave}
       />
       <span className="text-xs place-self-end">{formattedDate}</span>
+      {showDeletePopup && (
+        <DeleteConfirmPopup
+          setShowPopup={setShowDeletePopup}
+          handleDelete={handleDelete}
+        />
+      )}
     </div>
   );
 };
