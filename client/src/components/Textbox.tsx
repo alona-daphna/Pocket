@@ -5,9 +5,11 @@ import { Entry } from '../types';
 
 interface TextboxProps {
   setEntries: Dispatch<SetStateAction<Entry[]>>;
+  setIsFullMode: (value: boolean) => void;
+  isFullMode: boolean;
 }
 
-const Textbox = ({ setEntries }: TextboxProps) => {
+const Textbox = ({ setEntries, setIsFullMode, isFullMode }: TextboxProps) => {
   const [content, setContent] = useState('');
 
   const createEntry = async () => {
@@ -32,22 +34,40 @@ const Textbox = ({ setEntries }: TextboxProps) => {
     setContent('');
   };
 
-  const toggleFullMode = () => {};
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      setIsFullMode(false);
+      handleSubmit();
+    }
+  };
 
   return (
     <div className="relative">
-      <AutoTextArea
-        styles="overflow-hidden resize-none w-full px-3 py-2 focus:border-slate-300 border-2 rounded-md border-white focus:outline-none"
-        placeholder="type something..."
-        value={content}
-        setValue={setContent}
-        onEnter={handleSubmit}
-        resizeOnEnter={true}
-      />
-      <GoScreenFull
-        className="cursor-pointer absolute right-0 bottom-3"
-        onClick={toggleFullMode}
-      />
+      {!isFullMode ? (
+        <>
+          <AutoTextArea
+            styles="align-middle leading-3 overflow-hidden resize-none w-full px-3 py-2 focus:border-slate-300 border-2 rounded-md border-white focus:outline-none"
+            placeholder="type something..."
+            value={content}
+            setValue={setContent}
+            onEnter={handleSubmit}
+            resizeOnEnter={true}
+          />
+          <GoScreenFull
+            className="cursor-pointer absolute right-2 bottom-[6px] hover:bg-slate-200 p-1 rounded-md text-2xl"
+            onClick={() => setIsFullMode(true)}
+          />
+        </>
+      ) : (
+        <textarea
+          className="w-full h-[80vh] resize-none focus:outline-none"
+          placeholder="type something..."
+          onKeyDown={handleKeyDown}
+          value={content}
+          onChange={(e) => setContent(e.target.value)}
+        />
+      )}
     </div>
   );
 };
