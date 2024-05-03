@@ -31,7 +31,7 @@ const createEntry = async (req: Request, res: Response) => {
     content,
   });
 
-  res.send();
+  res.json('Entry create successfully');
 };
 
 const deleteEntry = async (req: Request, res: Response) => {
@@ -55,4 +55,25 @@ const deleteEntry = async (req: Request, res: Response) => {
   }
 };
 
-export { getWithPagination, createEntry, deleteEntry };
+const updateEntry = async (req: Request, res: Response) => {
+  const id = req.params.id;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).send('Invalid entry ID');
+  }
+
+  if (!req.body?.content) {
+    return res.status(400).send('Request body is missing or invalid');
+  }
+
+  try {
+    await entry.findByIdAndUpdate(id, { content: req.body.content });
+
+    res.status(200).send('Entry updated successfully');
+  } catch (error) {
+    console.error('Error updating entry:', error);
+    res.status(500).send('Failed to update entry');
+  }
+};
+
+export { getWithPagination, createEntry, deleteEntry, updateEntry };
