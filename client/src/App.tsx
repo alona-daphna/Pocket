@@ -22,7 +22,9 @@ function App() {
 
   useEffect(() => {
     const fetchEntries = async () => {
-      const response = await fetch('http://localhost:4000/entries');
+      const response = await fetch(
+        'https://pocket-production.up.railway.app/entries'
+      );
       const entries: Entry[] = await response.json();
       setEntries(entries);
     };

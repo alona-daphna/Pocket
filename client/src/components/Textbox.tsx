@@ -13,13 +13,16 @@ const Textbox = ({ setEntries, setIsFullMode, isFullMode }: TextboxProps) => {
   const [content, setContent] = useState('');
 
   const createEntry = async () => {
-    const response = await fetch('http://localhost:4000/entries', {
-      method: 'POST',
-      body: JSON.stringify({ content: content }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const response = await fetch(
+      'https://pocket-production.up.railway.app/entries',
+      {
+        method: 'POST',
+        body: JSON.stringify({ content: content }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
 
     if (response.ok) {
       const entry: Entry = await response.json();

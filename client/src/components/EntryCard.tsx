@@ -24,20 +24,26 @@ const EntryCard = ({ entry, setEntries }: EntryProps) => {
   }, [entry.createdAt]);
 
   const handleSave = async () => {
-    await fetch(`http://localhost:4000/entries/${entry._id}`, {
-      method: 'PATCH',
-      body: JSON.stringify({ content: content }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    await fetch(
+      `https://pocket-production.up.railway.app/entries/${entry._id}`,
+      {
+        method: 'PATCH',
+        body: JSON.stringify({ content: content }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
   };
 
   const handleDelete = async () => {
     setShowDeletePopup(false);
-    const response = await fetch(`http://localhost:4000/entries/${entry._id}`, {
-      method: 'DELETE',
-    });
+    const response = await fetch(
+      `https://pocket-production.up.railway.app/entries/${entry._id}`,
+      {
+        method: 'DELETE',
+      }
+    );
 
     if (response.ok) {
       setEntries((prev) => [...prev.filter((x) => x._id != entry._id)]);
